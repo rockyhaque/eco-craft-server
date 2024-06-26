@@ -11,6 +11,11 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+// app.use(cors({
+//   origin: ["http://localhost:5173/"],
+//   credentials: true
+// }));
+
 
 // database connection
 const uri =`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@revive.2tkcldw.mongodb.net/?retryWrites=true&w=majority&appName=Revive`;
@@ -31,7 +36,8 @@ async function run() {
 
     const database = client.db("craftDB");
 
-    const craftCollection = database.collection("crafts")
+    const craftCollection = database.collection("crafts");
+    const userCollection = database.collection("users");
 
     // craft apis
     app.post("/craft", async(req, res) => {
@@ -39,6 +45,13 @@ async function run() {
         const result = await craftCollection.insertOne(newCraft);
         // console.log(result);
         res.send(result);
+    })
+
+    app.get("/craft/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await craftCollection.findOne(query);
+      res.send(result)
     })
 
     app.get("/craft/:email", async(req, res) => {
@@ -71,7 +84,13 @@ async function run() {
           stockStatus: updatedCraft.stockStatus,
           processing_time: updatedCraft.processing_time,
           description: updatedCraft.description,
-          craftPhotoURL: updatedCraft.craftPhotoURL
+          craftPhotoURL: updatedCraft.craftPhotoURL,
+
+          email: updatedCraft.email,
+          userName: updatedCraft.userName,
+          photoURL: updatedCraft.photoURL,
+          accountCreation: updatedCraft.accountCreation,
+          accountLastSignIn: updatedCraft.accountLastSignIn
           
         }
       };
@@ -80,11 +99,73 @@ async function run() {
       res.send(result);
     })
 
+    // app.put("/craft/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const filter = { _id: new ObjectId(id) };
+    //   const options = { upsert: true };
+    //   const updatedCraft = req.body;
+    //   const craft = {
+    //     $set: {
+    //       name: updatedCraft.name,
+    //       rating: updatedCraft.rating,
+    //       category: updatedCraft.category,
+    //       price: updatedCraft.price,
+    //       customization: updatedCraft.customization,
+    //       stockStatus: updatedCraft.stockStatus,
+    //       processing_time: updatedCraft.processing_time,
+    //       description: updatedCraft.description,
+    //       craftPhotoURL: updatedCraft.craftPhotoURL,
+    //       email: updatedCraft.email,
+    //       userName: updatedCraft.userName,
+    //       photoURL: updatedCraft.photoURL,
+    //       accountCreation: updatedCraft.accountCreation,
+    //       accountLastSignIn: updatedCraft.accountLastSignIn,
+    //     },
+    //   };
+    
+    //   const result = await craftCollection.updateOne(filter, craft, options);
+    //   res.send(result);
+    // });
+    
+
     app.delete("/craft/:id", async (req, res) => {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};
       const result = await craftCollection.deleteOne(query);
       res.send(result)
+    })
+
+
+    // user related apis
+    app.get('/user', async (req, res) => {
+      const cursor = userCollection.find();
+      const users = await cursor.toArray();
+      res.send(users);
+    })
+
+    app.post('/user', async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
+
+    app.patch('/user', async(req, res) => {
+      const user = req.body;
+      const filter = {email: user.email}
+      const updatedDoc = {
+        $set: {
+          lastLoginAt: user.lastLoginAt
+        }
+      }
+      const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result)
+    })
+
+    app.delete('/user/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
     })
 
     
