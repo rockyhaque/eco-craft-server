@@ -31,7 +31,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
+    // Connect the client to the server	
     await client.connect();
 
     const database = client.db("craftDB");
@@ -40,6 +40,13 @@ async function run() {
     const userCollection = database.collection("users");
 
     // craft apis
+    app.get("/craft", async (req, res) => {
+      const cursor = craftCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
     app.post("/craft", async(req, res) => {
         const newCraft = req.body;
         const result = await craftCollection.insertOne(newCraft);
@@ -54,7 +61,7 @@ async function run() {
       res.send(result)
     })
 
-    app.get("/craft/:email", async(req, res) => {
+    app.get("/myCraft/:email", async(req, res) => {
         const email = req.params.email;
         const query = {email: email};
         const result = await craftCollection.find(query).toArray();
@@ -85,13 +92,6 @@ async function run() {
           processing_time: updatedCraft.processing_time,
           description: updatedCraft.description,
           craftPhotoURL: updatedCraft.craftPhotoURL,
-
-          email: updatedCraft.email,
-          userName: updatedCraft.userName,
-          photoURL: updatedCraft.photoURL,
-          accountCreation: updatedCraft.accountCreation,
-          accountLastSignIn: updatedCraft.accountLastSignIn
-          
         }
       };
 
@@ -140,12 +140,15 @@ async function run() {
     app.get('/user', async (req, res) => {
       const cursor = userCollection.find();
       const users = await cursor.toArray();
+      console.log(users);
       res.send(users);
     })
 
     app.post('/user', async (req, res) => {
       const user = req.body;
+      console.log(user);
       const result = await userCollection.insertOne(user);
+      console.log(result);
       res.send(result);
     })
 
