@@ -99,7 +99,7 @@ async function run() {
       res.send(result);
     })
 
-    // app.put("/craft/:id", async (req, res) => {
+    
     //   const id = req.params.id;
     //   const filter = { _id: new ObjectId(id) };
     //   const options = { upsert: true };
@@ -136,42 +136,6 @@ async function run() {
     })
 
 
-    // user related apis
-    app.get('/user', async (req, res) => {
-      const cursor = userCollection.find();
-      const users = await cursor.toArray();
-      console.log(users);
-      res.send(users);
-    })
-
-    app.post('/user', async (req, res) => {
-      const user = req.body;
-      console.log(user);
-      const result = await userCollection.insertOne(user);
-      console.log(result);
-      res.send(result);
-    })
-
-    app.patch('/user', async(req, res) => {
-      const user = req.body;
-      const filter = {email: user.email}
-      const updatedDoc = {
-        $set: {
-          lastLoginAt: user.lastLoginAt
-        }
-      }
-      const result = await userCollection.updateOne(filter, updatedDoc);
-      res.send(result)
-    })
-
-    app.delete('/user/:id', async (req, res) => {
-      const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
-      const result = await userCollection.deleteOne(query);
-      res.send(result);
-    })
-
-    
 
 
 
