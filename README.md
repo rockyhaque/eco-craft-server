@@ -1,12 +1,16 @@
-# Eco Craft - Jute & wooden Crafts
+# Eco Craft Server - Jute & wooden Crafts
 
 > A10 Type-02 Requirements
 
-## Live Link: 
+`Category`: Jute & wooden Crafts
+
+## Live Link: https://eco-craft-beta.web.app
 
  > Client Side Repository: https://github.com/rockyhaque/eco-craft-client
 
  > Server Side Repository: https://github.com/rockyhaque/eco-craft-server
+
+ > Server Side: https://eco-craft-server-phi.vercel.app
 
 
 <br>
@@ -34,3 +38,15 @@ https://www.npmjs.com/package/react-simple-typewriter
 
 - React-tooltip: 
 https://react-tooltip.com/
+
+- React Awesome Reveal: 
+https://www.npmjs.com/package/react-awesome-reveal
+
+
+
+## Dependencies
+
+- **cors:** ^2.8.5 - Middleware for enabling CORS
+- **dotenv:** ^16.4.5 - Loads environment variables from a `.env` file
+- **express:** ^4.19.2 - Web framework for Node.js
+- **mongodb:** ^6.7.0 - MongoDB driver for Node.js

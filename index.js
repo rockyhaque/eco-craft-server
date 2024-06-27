@@ -17,6 +17,7 @@ app.use(cors());
 // }));
 
 
+
 // database connection
 const uri =`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@revive.2tkcldw.mongodb.net/?retryWrites=true&w=majority&appName=Revive`;
 
@@ -69,12 +70,6 @@ async function run() {
         res.send(result)
     })
 
-    // app.get("/singleCraft/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const result = await craftCollection.findOne({_id: new ObjectId(id)})
-    //   console.log(result);
-    //   res.send(result)
-    // })
 
     app.put("/craft/:id", async(req, res) => {
       const id = req.params.id;
@@ -141,7 +136,7 @@ async function run() {
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
