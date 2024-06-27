@@ -31,6 +31,8 @@ Eco Craft is an e-commerce platform dedicated to art and craft enthusiasts. It a
 
 - `Theme Switcher`: User can toggle the theme based on his/her perference for light/dark mode
 
+
+
 ## Challenges Package Implementation
 
 - React-simple-typewriter: 
